@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Counting Before Mapping</title>
+<meta name="description" content="A method exhibit on building a High-Injury Network where the crash count is small — Shoalwater Bay Indian Tribe SS4A Safety Analysis.">
+<style>
+:root{
+  color-scheme: light;
+  --surface-0:#f7f7f5; --surface-1:#fcfcfb; --surface-2:#efefec;
+  --ink-1:#0b0b0b; --ink-2:#52514e; --ink-3:#77766f;
+  --rule:#dedcd6;
+  --s1:#2a78d6; --s2:#eb6834;
+  --warn:#8a5a00; --warnbg:#fdf4e3;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --surface-0:#121211; --surface-1:#1a1a19; --surface-2:#232321;
+    --ink-1:#f0efec; --ink-2:#c3c2b7; --ink-3:#9a998f;
+    --rule:#36352f;
+    --s1:#3987e5; --s2:#d95926;
+    --warn:#e0b25c; --warnbg:#2a2216;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --surface-0:#121211; --surface-1:#1a1a19; --surface-2:#232321;
+  --ink-1:#f0efec; --ink-2:#c3c2b7; --ink-3:#9a998f;
+  --rule:#36352f;
+  --s1:#3987e5; --s2:#d95926;
+  --warn:#e0b25c; --warnbg:#2a2216;
+}
+*{box-sizing:border-box;font-variant-ligatures:none;font-feature-settings:"calt" 0,"liga" 0}
+body{margin:0;background:var(--surface-0);color:var(--ink-1);
+  font:16px/1.65 "Bitstream Charter","DejaVu Serif",serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:48px 16px 96px}
+header.mast{border-bottom:2px solid var(--ink-1);padding-bottom:20px;margin-bottom:28px}
+.kicker{font:600 11px/1.4 Carlito,"DejaVu Sans",sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.12;margin:0 0 10px;letter-spacing:-.015em}
+.sub{font-size:18px;color:var(--ink-2);margin:0}
+.byline{font:13px/1.5 Carlito,"DejaVu Sans",sans-serif;color:var(--ink-3);margin-top:16px}
+h2{font-size:22px;line-height:1.25;margin:44px 0 12px;letter-spacing:-.01em}
+h3{font:600 14px/1.4 Carlito,"DejaVu Sans",sans-serif;letter-spacing:.02em;
+  text-transform:uppercase;color:var(--ink-3);margin:32px 0 10px}
+p{margin:0 0 15px}
+strong{font-weight:600}
+.note{background:var(--surface-2);border-left:3px solid var(--ink-3);
+  padding:16px 18px;margin:22px 0;font-size:15px}
+.note p:last-child{margin-bottom:0}
+.flag{background:var(--warnbg);border-left:3px solid var(--warn);padding:16px 18px;margin:22px 0;font-size:15px}
+.flag p:last-child{margin-bottom:0}
+figure{margin:28px 0;background:var(--surface-1);border:1px solid var(--rule);
+  border-radius:10px;padding:20px}
+figcaption{font:13px/1.55 Carlito,"DejaVu Sans",sans-serif;color:var(--ink-2);margin-top:14px}
+figcaption b{color:var(--ink-1);font-weight:600}
+.fig-title{font:600 15px/1.35 Carlito,"DejaVu Sans",sans-serif;color:var(--ink-1);margin-bottom:3px}
+.fig-sub{font:13px/1.4 Carlito,"DejaVu Sans",sans-serif;color:var(--ink-3);margin-bottom:18px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 14px;
+  font:13px/1 Carlito,"DejaVu Sans",sans-serif;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:11px;height:11px;border-radius:2px;display:inline-block}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.axis text{font:11px Carlito,"DejaVu Sans",sans-serif;fill:var(--ink-3)}
+.vlab{font:600 12px Carlito,"DejaVu Sans",sans-serif;fill:var(--ink-1)}
+.clab{font:11px Carlito,"DejaVu Sans",sans-serif;fill:var(--ink-2)}
+.grid line{stroke:var(--rule);stroke-width:1}
+.bar{transition:opacity .12s}
+.bar:hover{opacity:.78;cursor:default}
+table{width:100%;border-collapse:collapse;margin:18px 0;
+  font:14px/1.5 Carlito,"DejaVu Sans",sans-serif}
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:18px 0}
+.tscroll table{margin:0;min-width:420px}
+@media (max-width:520px){
+  table{font-size:12.5px}
+  th,td{padding:7px 7px}
+}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--ink-2);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.verdict{font-size:12px;font-weight:600;padding:2px 7px;border-radius:4px;white-space:nowrap}
+.v-el{background:var(--warnbg);color:var(--warn)}
+.v-no{background:var(--surface-2);color:var(--ink-3)}
+details{margin:16px 0;border:1px solid var(--rule);border-radius:8px;background:var(--surface-1)}
+summary{cursor:pointer;padding:12px 16px;font:600 13px Carlito,"DejaVu Sans",sans-serif;color:var(--ink-2)}
+details[open] summary{border-bottom:1px solid var(--rule)}
+.dc{padding:4px 16px 12px}
+.tt{position:fixed;pointer-events:none;opacity:0;transition:opacity .1s;z-index:60;
+  background:var(--ink-1);color:var(--surface-1);padding:7px 11px;border-radius:6px;
+  font:12px/1.45 Carlito,"DejaVu Sans",sans-serif;max-width:250px;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.src{font:13px/1.6 Carlito,"DejaVu Sans",sans-serif;color:var(--ink-2)}
+.src li{margin-bottom:9px}
+footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--rule);
+  font:13px/1.6 Carlito,"DejaVu Sans",sans-serif;color:var(--ink-3)}
+.hero{display:flex;gap:28px;flex-wrap:wrap;margin:26px 0;padding:22px;
+  background:var(--surface-1);border:1px solid var(--rule);border-radius:10px}
+.hero div{flex:1 1 150px}
+.hn{font:700 36px/1 Carlito,"DejaVu Sans",sans-serif;letter-spacing:-.02em;color:var(--ink-1)}
+.hl{font:13px/1.4 Carlito,"DejaVu Sans",sans-serif;color:var(--ink-2);margin-top:7px}
+@media print{
+  body{background:#fff}
+  figure,.hero{break-inside:avoid}
+  details{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <div class="kicker">Method exhibit · Component A</div>
+  <h1>Counting before mapping</h1>
+  <p class="sub">What the federal crash record can and cannot support for a High-Injury Network on the Shoalwater Bay Indian Reservation.</p>
+  <p class="byline">ChiResearch Technologies, LLC · Prepared for the Shoalwater Bay Indian Tribe, RFP P-2027-2 · October 2026</p>
+</header>
+
+<div class="note">
+<p><b>What this document is.</b> Original applied analysis built entirely from NHTSA's current public Fatality Analysis Reporting System release, prepared as an example of relevant work product under the Proposal Requirements of RFP P-2027-2. It is analysis produced for this bid, not work delivered under a client contract. Every figure here is computed from the cited release by the method stated in Section 7 and reproduces from the scripts that produced it.</p>
+</div>
+
+<p>Component A asks for a geospatial identification of higher-risk locations — "a high-injury network or equivalent." The standard way to build one is to rank road segments by observed crash frequency or crash density and take the worst performers. That method needs enough crashes to rank.</p>
+
+<p>Before proposing a method, we counted. This note reports what the count turned out to be, what it rules out, and what it requires instead.</p>
+
+<h2>1. The count, at the scale of the reservation</h2>
+
+<p>The Shoalwater Bay Indian Reservation is approximately one square mile on the north shore of Willapa Bay, bisected east–west by SR 105. We measured straight-line distance from the Shoalwater Bay Tribal Center to every fatal crash in Washington State with usable coordinates, 2019 through 2023, and counted by radius.</p>
+
+<div class="hero">
+  <div><div class="hn">0</div><div class="hl">fatal crashes within 2 miles of the Tribal Center, 2019–2023</div></div>
+  <div><div class="hn">1</div><div class="hl">within 5 miles</div></div>
+  <div><div class="hn">36</div><div class="hl">within 25 miles</div></div>
+</div>
+
+<figure>
+  <div class="fig-title">Fatal crashes by distance from the Shoalwater Bay Tribal Center</div>
+  <div class="fig-sub">Washington State, 2019–2023 · cumulative count within each radius</div>
+  <div id="c1"></div>
+  <figcaption><b>Reading this:</b> the study area has to widen to roughly 25 miles before the fatal-crash record contains enough events to analyze at all. At the scale of the reservation itself, and at the scale of the SR 105 segment that crosses it, the count is zero or one. <b>A frequency-ranked High-Injury Network cannot be built from this.</b> There is nothing to rank.</figcaption>
+</figure>
+
+<p>The single fatal crash within five miles occurred on SR 105 in 2022, 2.3 miles from the Tribal Center, on a roadway owned by the State Highway Agency. Across all of Pacific County the five-year total is 18 fatal crashes and 20 deaths, distributed 6 / 1 / 1 / 5 / 5 across the five years.</p>
+
+<h3>Is this a Pacific County peculiarity?</h3>
+
+<p>No, and we checked rather than assuming. Computing the same count for all 39 Washington counties on the same data: the median county recorded 32 fatal crashes over the five years, the range runs from 1 to 635, and <strong>11 of 39 counties recorded 20 or fewer</strong>. Pacific County, at 18, ranks tenth from the bottom. The small-count problem is a structural property of <span style="white-space:nowrap">rural safety planning</span> in Washington, not a quirk of this jurisdiction — which is why the method below is a method and not a workaround.</p>
+
+<h2>2. What the small count does to a systemic analysis</h2>
+
+<p>Component A also asks for "analysis of systemic and specific safety needs … high-risk road features." The systemic approach asks a different question from the frequency approach: not <em>where have crashes happened</em>, but <em>which road features are over-represented among the crashes that have</em>. That question tolerates a smaller sample than a frequency ranking does. It does not tolerate an arbitrarily small one.</p>
+
+<p>We tested five candidate risk factors in the 25-mile study area against the same measure computed the same way on all 3,084 geocoded Washington fatal crashes. The statewide figure is the baseline; the study-area figure is the test.</p>
+
+<figure>
+  <div class="fig-title">Candidate systemic risk factors: study area against the statewide baseline</div>
+  <div class="fig-sub">Share of fatal crashes carrying each characteristic · 2019–2023 · study area n=36, Washington n=3,084</div>
+  <div class="legend">
+    <span><i class="sw" style="background:var(--s1)"></i>Study area (within 25 mi)</span>
+    <span><i class="sw" style="background:var(--s2)"></i>Washington statewide</span>
+    <span style="color:var(--ink-3)">│ 95% confidence interval on the study-area share</span>
+  </div>
+  <div id="c2"></div>
+  <figcaption><b>Reading this:</b> only one factor — off-roadway departure — sits above its statewide baseline, at 44.4% against 32.7%. Its 95% confidence interval runs from 29.5% to 60.4%, which contains the baseline, and Fisher's exact test returns p = 0.153. <b>It is elevated in this sample and it is not established.</b> Three factors that look substantial in isolation are statistically indistinguishable from the statewide rate. One — darkness — runs <em>lower</em> than the state as a whole, which is the opposite of what a lighting-led reading of this corridor would predict.</figcaption>
+</figure>
+
+<details>
+<summary>Table view — all five factors with counts, intervals and tests</summary>
+<div class="dc">
+<div class="tscroll"><table>
+<thead><tr><th>Factor</th><th class="n">Study area</th><th class="n">95% CI</th><th class="n">Statewide</th><th class="n">p</th><th>Verdict</th></tr></thead>
+<tbody id="t2"></tbody>
+</table></div>
+<p style="font:13px/1.5 Carlito,"DejaVu Sans",sans-serif;color:var(--ink-3)">Wilson score interval on the study-area proportion; Fisher's exact test, two-sided, against the statewide count. Factors are FARS-coded fields: relation to roadway, manner of collision, intersection type, and light condition.</p>
+</div>
+</details>
+
+<div class="flag">
+<p><b>The number that sets the scope of work.</b> To detect a difference of the size observed on off-roadway departure — 44.4% against a 32.7% baseline — at 80% power and a 5% significance level requires approximately <strong>131 crashes</strong> in the study area. The fatal-only record supplies 36. <strong>The analysis is short by a factor of about 3.6.</strong></p>
+</div>
+
+<h2>3. Where the missing records are</h2>
+
+<p>FARS is a census of fatal crashes and nothing else. It contains serious-injury records only for people injured in a crash where someone died — in Washington's 2023 file, 184 persons coded "Suspected Serious Injury (A)" appear, every one of them inside a fatal crash. Crashes in which someone was seriously injured and no one died are not in the dataset at any radius or any time span.</p>
+
+<p>That is the gap, and it is also the remedy. SS4A defines its safety baseline on fatalities <em>and</em> serious injuries. The serious-injury half of that baseline lives in the Washington State crash database held by WSDOT and the Washington Traffic Safety Commission, not in the federal release. Obtaining it is the first task of the Safety Analysis, not an optional enrichment — and on any plausible ratio of serious-injury to fatal crashes it moves the study-area sample from 36 into the range where the systemic test above has the power to return an answer rather than an interval.</p>
+
+<h2>4. Two findings about the data itself</h2>
+
+<h3>The reservation is not flagged in the federal record</h3>
+
+<p>FARS carries a special-jurisdiction field that identifies crashes on Indian reservation land. Across Washington, 172 fatal crashes in 2019–2023 are coded that way, spread over 14 counties — 79 in Yakima County, 46 in Pierce. <strong>In Pacific County the count is zero</strong>, across all 18 fatal crashes, on a reservation that SR 105 runs directly through.</p>
+
+<p>We do not assert why. What follows operationally is firm regardless: an analyst who scopes this work by filtering on reservation jurisdiction retrieves an empty table and may conclude there is no safety problem to analyze. The study area has to be defined geographically — by corridor and by radius — and jurisdiction treated as an attribute to be verified against the Tribe's own records, never as the filter that builds the dataset.</p>
+
+<h3>Four road owners inside the study area</h3>
+
+<p>The RFP requires that "the analysis should include all roadways within the jurisdiction, without regard for ownership." On this data that is not boilerplate. The 36 crashes in the study area are distributed across four distinct road-owner categories in the federal coding alone:</p>
+
+<div class="tscroll"><table>
+<thead><tr><th>Road owner, as coded in FARS</th><th class="n">Fatal crashes</th></tr></thead>
+<tbody>
+<tr><td>State Highway Agency</td><td class="n">24</td></tr>
+<tr><td>County Highway Agency</td><td class="n">7</td></tr>
+<tr><td>City or Municipal Highway Agency</td><td class="n">4</td></tr>
+<tr><td>Trafficway not in State inventory</td><td class="n">1</td></tr>
+</tbody>
+</table></div>
+
+<p>Each owner maintains its own inventory, applies its own reporting practice, and in the last row maintains no State inventory record at all. A single-source extract reproduces one of those four views. Reconciling them is a named task in our proposed methodology, with the reconciliation itself delivered as a documented artifact rather than performed silently.</p>
+
+<h2>5. The Tribe reached this conclusion in 2017</h2>
+
+<p>After completing the analysis above we read the Tribe's own <em>Shoalwater Bay Indian Tribe Safety Plan</em> (May 2017), published on the Tribe's website. It describes the same obstacle, found the same way, nine years earlier:</p>
+
+<blockquote style="margin:18px 0;padding:14px 18px;border-left:3px solid var(--ink-3);background:var(--surface-2);font-size:15px">
+<p style="margin:0 0 10px">"Crash Data was requested from Washington State Department of Transportation (WSDOT) — Transportation Data and GIS Office (TDGO). <strong>Due&nbsp;to limited crash data from WSDOT</strong>, the Shoalwater Bay Tribal Police Department was requested to provide any crash data they had. In discussions with the Tribe, it was determined that, due to a lack of information, a Road Safety Audit (RSA) needed to be completed on various roads and intersections within the Shoalwater Bay Reservation."</p>
+<p style="margin:0">"<strong>While much of the crash data we have researched is not specific to the geographic area of the Shoalwater Bay Reservation</strong>, and not accurate to the unique characteristics of the SBIT Tribal Transportation System and community…"</p>
+</blockquote>
+
+<p>That is the finding of Sections 1 through 3 of this note, in the Tribe's own words, reached from the State dataset rather than the federal one. We did not know it when we ran the analysis. It is the strongest available evidence that the small-count problem is a durable property of this jurisdiction and not an artifact of the window or the source we happened to choose — and it is why the Tribe's first emphasis area in that plan is <strong>Data Management</strong>, ahead of any engineering countermeasure.</p>
+
+<p>Two further points of contact between that plan and this analysis are worth stating, because they run in opposite directions.</p>
+
+<h3>Where the 2017 plan corroborates the systemic finding</h3>
+
+<p>The one risk factor elevated above the statewide baseline in Section 2 is <strong>off-roadway departure</strong>. The Tribe's fourth emphasis area is <strong>"Reduction of Roadside Hazards"</strong>, and the plan documents the specific condition behind it: on the southwest side of Tokeland Road (Route 9513), a ditch roughly two feet deep at a 0.5:1 slope running some 780 feet near the Tribal Center complex, with a further stretch of about 1,000 feet by the police station. A field audit and a federal crash dataset arrived at the same place independently. Neither establishes the finding alone; together they are a reason to carry it into the systemic screening as a prior rather than discover it again.</p>
+
+<h3>Where the 2017 plan shows what the federal record cannot see</h3>
+
+<p>The same plan records <strong>11 crashes in the Casino parking lot between October 2011 and December 2015, 7 of them involving pedestrians</strong>, with&nbsp;the remainder hit-and-run, alongside 419 traffic stops reported across the Reservation. <strong>None of those 11 crashes appears anywhere in the analysis above</strong>, at any radius or any window — because nobody died in them, and FARS is a census of fatal crashes only.</p>
+
+<p>That is the Section 3 gap made concrete on the Tribe's own ground. A pedestrian-crash cluster in a single parking lot, documented by the Tribe, invisible to the federal record. It is also the clearest argument for the data architecture this Safety Analysis proposes: the serious-injury and non-fatal record exists, it is held by WSDOT and by the Shoalwater Bay Tribal Police Department, and the 2017 plan already names the Police Department as the source that had to be approached when the State data fell short.</p>
+
+<p class="note" style="font-size:14px">A note on one figure: the 2017 plan states the pedestrian share of those 11 crashes twice, once as 70% and once as 64%. Seven of eleven is 63.6%. We cite the counts rather than either percentage, and we flag it because a Safety Action Plan that carries a contradiction forward into a grant application inherits it. Reconciling figures of this kind across the Tribe's prior plans is part of Task 1 as we have scoped it.</p>
+
+<h2>6. What follows for the Safety Analysis</h2>
+
+<p>Four things, each traceable to a figure above rather than to a preference:</p>
+
+<div class="tscroll"><table>
+<thead><tr><th>Finding</th><th>Consequence for the method</th></tr></thead>
+<tbody>
+<tr><td>0 fatal crashes within 2 miles; 1 within 5</td><td>The High-Injury Network is built on systemic risk factors over a defined corridor study area, not on a crash-frequency ranking. A frequency ranking at this scale would order noise.</td></tr>
+<tr><td>131 crashes needed for power; 36 available in the federal record</td><td>Acquisition of the full WSDOT/WTSC fatal-and-serious-injury dataset is task one, and the analysis reports its own statistical power rather than presenting intervals as conclusions.</td></tr>
+<tr><td>0 reservation-coded crashes in Pacific County</td><td>Study area defined geographically; jurisdiction verified against Tribal records as an attribute, never used as the dataset filter.</td></tr>
+<tr><td>Four road owners, one outside the State inventory</td><td>A documented multi-owner reconciliation, delivered as an artifact, with every exclusion carrying a reason code that the Tribe can review and reverse.</td></tr>
+</tbody>
+</table></div>
+
+<h2>7. Method, and its limits</h2>
+
+<p>Every figure above is computed from the FARS annual national CSV releases for 2019 through 2023, filtered to Washington State (FIPS 53), retrieved 21 October 2026. Distances are straight-line great-circle distances from an approximate Tribal Center coordinate of 46.708 N, 124.044 W, computed on the crash coordinates published in the release. County counts use the FARS county coding. Proportions are tested with Fisher's exact test, two-sided; intervals are Wilson score intervals. The sample-size requirement in Section 2 is a two-proportion calculation at 80% power and α = 0.05 against a comparison group large enough to treat as a known rate.</p>
+
+<p>The limits, stated because they bear on how much weight each figure carries:</p>
+
+<ul class="src">
+<li><strong>Straight-line distance is not network distance.</strong> A crash 2.3 miles from the Tribal Center as the crow flies may be considerably further by road. The radius bands are a counting device for establishing sample size, not a corridor definition. The corridor study area in the proposal is defined by route and milepost, which is what the Safety Analysis would actually use.</li>
+<li><strong>Eight of 3,092 Washington crashes lack usable coordinates</strong> and are excluded from the distance analysis but retained in the county and statewide counts. The exclusion is reported rather than absorbed.</li>
+<li><strong>FARS is fatal-only.</strong> Section 3 is the whole of what can be said about serious injuries from this source, and it is a statement about the dataset rather than about the corridor.</li>
+<li><strong>The approximate centroid is ours, not the Tribe's.</strong> It is derived from the published Tribal Center address. A reservation boundary polygon from the Tribe's own GIS would shift every band slightly; it would not change the finding that the counts are 0, 1 and 3 at two, five and ten miles.</li>
+<li><strong>Five years is a choice.</strong> We ran 2019–2023 because those are the complete annual releases available. A ten-year window would roughly double the sample and dilute recency; the proposal commits to reporting the window's effect on the result rather than selecting the window that produces the preferred answer.</li>
+</ul>
+
+<h3>Sources</h3>
+<ol class="src">
+<li>National Highway Traffic Safety Administration, <em>Fatality Analysis Reporting System (FARS)</em>, National CSV annual releases 2019, 2020, 2021, 2022 and 2023. Retrieved 21 October 2026 from NHTSA's static file service. Tables used: <code>accident</code> (all years) and <code>person</code> (2023).</li>
+<li>Shoalwater Bay Indian Tribe, <em>Request for Proposal for SS4A Safety Action Plan for the Planning Department</em>, RFP P-2027-2, issued 7 October 2026.</li>
+<li>Shoalwater Bay Indian Tribe, published Tribal Center address, 2373 Tokeland Road, Tokeland, WA 98590, used to derive the approximate study-area centroid.</li>
+<li>U.S. Department of Transportation, Safe Streets and Roads for All (SS4A) Comprehensive Safety Action Plan components, cited by the RFP as the definition of Component A scope.</li>
+<li>Shoalwater Bay Indian Tribe, <em>Shoalwater Bay Indian Tribe Safety Plan</em>, May 2017, published on the Tribe's website. Quotations in Section 5 are verbatim; the emphasis areas, the Tokeland Road ditch dimensions and the Casino parking lot counts are as stated in that plan.</li>
+</ol>
+
+<footer>
+<p>ChiResearch Technologies, LLC · 6828 Flagstaff St, Hyattsville, MD 20785 · 410-929-2170 · wilfred@chiresearchai.com</p>
+<p>Prepared as an example of relevant work product for Shoalwater Bay Indian Tribe RFP P-2027-2. Original analysis produced for this bid; not work delivered under a client contract.</p>
+</footer>
+
+</div>
+<div class="tt" id="tt"></div>
+
+<script>
+const F = {"bands": [{"mi": 1, "crashes": 0, "deaths": 0}, {"mi": 2, "crashes": 0, "deaths": 0}, {"mi": 5, "crashes": 1, "deaths": 1}, {"mi": 10, "crashes": 3, "deaths": 3}, {"mi": 15, "crashes": 9, "deaths": 9}, {"mi": 25, "crashes": 36, "deaths": 37}, {"mi": 40, "crashes": 64, "deaths": 70}], "factors": [{"measure": "Off-roadway (roadside or shoulder)", "study_k": 16, "study_n": 36, "study_pct": 44.4, "ci": [29.5, 60.4], "state_k": 1007, "state_n": 3084, "state_pct": 32.7, "p": 0.153, "verdict": "elevated, not significant"}, {"measure": "Single-vehicle (no collision with a vehicle in transport)", "study_k": 22, "study_n": 36, "study_pct": 61.1, "ci": [44.9, 75.2], "state_k": 1911, "state_n": 3084, "state_pct": 62.0, "p": 1.0, "verdict": "not distinguishable"}, {"measure": "Not at an intersection", "study_k": 25, "study_n": 36, "study_pct": 69.4, "ci": [53.1, 82.0], "state_k": 2277, "state_n": 3084, "state_pct": 73.8, "p": 0.569, "verdict": "not distinguishable"}, {"measure": "Dark (lighted or unlighted)", "study_k": 12, "study_n": 36, "study_pct": 33.3, "ci": [20.2, 49.7], "state_k": 1473, "state_n": 3084, "state_pct": 47.8, "p": 0.094, "verdict": "not distinguishable"}, {"measure": "Dark and unlighted", "study_k": 5, "study_n": 36, "study_pct": 13.9, "ci": [6.1, 28.7], "state_k": 713, "state_n": 3084, "state_pct": 23.1, "p": 0.234, "verdict": "not distinguishable"}], "counties": {"n": 39, "median": 32, "minimum": 1, "maximum": 635, "pacific": 18, "rank_from_bottom": 10, "at_or_below_20": 11}, "ownership": [{"owner": "State Highway Agency", "n": 24}, {"owner": "County Highway Agency", "n": 7}, {"owner": "City or Municipal Highway Agency", "n": 4}, {"owner": "Trafficway Not in State Inventory", "n": 1}], "spjur": {"wa_reservation_coded": 172, "counties_with_any": 14, "pacific": 0, "yakima": 79, "pierce": 46}, "power": {"needed_for_80pct": 131, "available": 36, "shortfall": "3.6x"}, "pacific_by_year": [{"y": 2019, "c": 6}, {"y": 2020, "c": 1}, {"y": 2021, "c": 1}, {"y": 2022, "c": 5}, {"y": 2023, "c": 5}], "meta": {"source": "NHTSA FARS 2019-2023 National CSV, annual releases", "retrieved": "2026-10-21", "years": "2019-2023", "state": "Washington (FIPS 53)", "wa_total": 3092, "wa_geocoded": 3084, "center": "Shoalwater Bay Tribal Center, 2373 Tokeland Rd, Tokeland WA (approx. 46.708 N, 124.044 W)"}};
+const tt = document.getElementById('tt');
+function hov(el, html){
+  el.addEventListener('mousemove', e=>{
+    tt.innerHTML=html; tt.style.opacity=1;
+    let x=e.clientX+14, y=e.clientY-10;
+    if(x+260>innerWidth) x=e.clientX-250;
+    tt.style.left=x+'px'; tt.style.top=y+'px';
+  });
+  el.addEventListener('mouseleave', ()=>tt.style.opacity=0);
+}
+const NS='http://www.w3.org/2000/svg';
+function mk(n,a){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;}
+
+/* ---- Chart 1: distance bands ---- */
+(function(){
+  const d=F.bands, W=760, PT=14, PB=42, PL=58, PR=46, rowH=34;
+  const H=PT+PB+d.length*rowH;
+  const max=Math.max(...d.map(x=>x.crashes))||1;
+  const iw=W-PL-PR;
+  const svg=mk('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Cumulative fatal crashes by distance band'});
+  const g=mk('g',{class:'grid'});
+  for(let i=0;i<=4;i++){const x=PL+iw*i/4;
+    g.appendChild(mk('line',{x1:x,y1:PT,x2:x,y2:PT+d.length*rowH}));}
+  svg.appendChild(g);
+  const ax=mk('g',{class:'axis'});
+  for(let i=0;i<=4;i++){const x=PL+iw*i/4;const t=mk('text',{x:x,y:PT+d.length*rowH+18,'text-anchor':'middle'});
+    t.textContent=Math.round(max*i/4);ax.appendChild(t);}
+  const at=mk('text',{x:PL+iw/2,y:PT+d.length*rowH+36,'text-anchor':'middle',class:'axis'});
+  at.textContent='Cumulative fatal crashes, 2019–2023'; at.setAttribute('fill','var(--ink-3)');
+  ax.appendChild(at); svg.appendChild(ax);
+  d.forEach((r,i)=>{
+    const y=PT+i*rowH+6, h=rowH-14;
+    const lab=mk('text',{x:PL-10,y:y+h/2+4,'text-anchor':'end',class:'clab'});
+    lab.textContent=r.mi+' mi'; svg.appendChild(lab);
+    const w=Math.max(r.crashes/max*iw, r.crashes===0?0:2);
+    if(r.crashes===0){
+      const z=mk('text',{x:PL+5,y:y+h/2+4,class:'vlab'}); z.textContent='0';
+      z.setAttribute('fill','var(--ink-3)'); svg.appendChild(z);
+      const zl=mk('text',{x:PL+20,y:y+h/2+4,class:'clab'});
+      zl.textContent='— no crashes recorded'; svg.appendChild(zl);
+    } else {
+      const b=mk('rect',{x:PL,y:y,width:w,height:h,rx:4,fill:'var(--s1)',class:'bar'});
+      svg.appendChild(b);
+      hov(b,`<b>Within ${r.mi} miles</b><br>${r.crashes} fatal crash${r.crashes===1?'':'es'}<br>${r.deaths} death${r.deaths===1?'':'s'}`);
+      const v=mk('text',{x:PL+w+8,y:y+h/2+4,class:'vlab'}); v.textContent=r.crashes;
+      svg.appendChild(v);
+    }
+  });
+  document.getElementById('c1').appendChild(svg);
+})();
+
+/* ---- Chart 2: factors vs baseline, with CI ---- */
+(function(){
+  const d=F.factors, W=760, PT=16, PB=44, PL=234, PR=74, rowH=52;
+  const H=PT+PB+d.length*rowH;
+  const iw=W-PL-PR, max=90;
+  const svg=mk('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Systemic risk factors, study area versus statewide'});
+  const g=mk('g',{class:'grid'});
+  for(let v=0;v<=max;v+=15){const x=PL+iw*v/max; g.appendChild(mk('line',{x1:x,y1:PT,x2:x,y2:PT+d.length*rowH}));}
+  svg.appendChild(g);
+  const ax=mk('g',{class:'axis'});
+  for(let v=0;v<=max;v+=15){const x=PL+iw*v/max;const t=mk('text',{x:x,y:PT+d.length*rowH+18,'text-anchor':'middle'});
+    t.textContent=v+'%';ax.appendChild(t);}
+  const at=mk('text',{x:PL+iw/2,y:PT+d.length*rowH+36,'text-anchor':'middle'});
+  at.textContent='Share of fatal crashes carrying the characteristic';
+  at.setAttribute('fill','var(--ink-3)'); at.setAttribute('font-size','11');
+  at.setAttribute('font-family','Carlito,"DejaVu Sans",sans-serif');
+  ax.appendChild(at); svg.appendChild(ax);
+  d.forEach((r,i)=>{
+    const y0=PT+i*rowH;
+    const words=r.measure.split(' '); let ln=[], cur='';
+    words.forEach(w=>{ if((cur+' '+w).trim().length>32){ln.push(cur.trim());cur=w;} else cur+=' '+w;});
+    ln.push(cur.trim());
+    ln.slice(0,2).forEach((t,j)=>{
+      const e=mk('text',{x:PL-14,y:y0+18+j*14,'text-anchor':'end',class:'clab'});
+      e.textContent=t; svg.appendChild(e);
+    });
+    const bh=13, gap=2;
+    // study bar
+    const w1=r.study_pct/max*iw;
+    const b1=mk('rect',{x:PL,y:y0+6,width:Math.max(w1,2),height:bh,rx:4,fill:'var(--s1)',class:'bar'});
+    svg.appendChild(b1);
+    hov(b1,`<b>Study area (within 25 mi)</b><br>${r.study_k} of ${r.study_n} crashes — ${r.study_pct}%<br>95% CI ${r.ci[0]}–${r.ci[1]}%`);
+    const ciHi=PL+r.ci[1]/max*iw;
+    const v1x=Math.max(PL+Math.max(w1,2), ciHi)+10;
+    const v1=mk('text',{x:v1x,y:y0+6+bh-2,class:'vlab'});
+    v1.textContent=r.study_pct.toFixed(1)+'%'; svg.appendChild(v1);
+    // state bar
+    const w2=r.state_pct/max*iw;
+    const b2=mk('rect',{x:PL,y:y0+6+bh+gap,width:Math.max(w2,2),height:bh,rx:4,fill:'var(--s2)',class:'bar'});
+    svg.appendChild(b2);
+    hov(b2,`<b>Washington statewide</b><br>${r.state_k} of ${r.state_n} crashes — ${r.state_pct}%`);
+    const v2=mk('text',{x:PL+Math.max(w2,2)+8,y:y0+6+bh+gap+bh-2,class:'vlab'});
+    v2.textContent=r.state_pct.toFixed(1)+'%'; v2.setAttribute('fill','var(--ink-2)'); svg.appendChild(v2);
+    // CI whisker on study bar
+    const xa=PL+r.ci[0]/max*iw, xb=PL+r.ci[1]/max*iw, yc=y0+6+bh/2;
+    const ci=mk('g',{});
+    ci.appendChild(mk('line',{x1:xa,y1:yc,x2:xb,y2:yc,stroke:'var(--ink-1)','stroke-width':1.5,opacity:.55}));
+    [xa,xb].forEach(x=>ci.appendChild(mk('line',{x1:x,y1:yc-5,x2:x,y2:yc+5,stroke:'var(--ink-1)','stroke-width':1.5,opacity:.55})));
+    svg.appendChild(ci);
+    hov(ci,`<b>95% confidence interval</b><br>${r.ci[0]}% to ${r.ci[1]}%<br>${r.ci[0]<=r.state_pct&&r.state_pct<=r.ci[1]?'Contains the statewide baseline':'Excludes the statewide baseline'}`);
+  });
+  document.getElementById('c2').appendChild(svg);
+})();
+
+/* ---- Table view ---- */
+(function(){
+  const tb=document.getElementById('t2');
+  F.factors.forEach(r=>{
+    const el=r.verdict.indexOf('elevated')===0;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${r.measure}</td>
+      <td class="n">${r.study_k}/${r.study_n} · ${r.study_pct}%</td>
+      <td class="n">${r.ci[0]}–${r.ci[1]}%</td>
+      <td class="n">${r.state_pct}%</td>
+      <td class="n">${r.p.toFixed(3)}</td>
+      <td><span class="verdict ${el?'v-el':'v-no'}">${r.verdict}</span></td>`;
+    tb.appendChild(tr);
+  });
+})();
+</script>
+</body>
+</html>
